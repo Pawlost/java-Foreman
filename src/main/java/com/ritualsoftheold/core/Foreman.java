@@ -1,5 +1,7 @@
 package com.ritualsoftheold.core;
 
+import com.ritualsoftheold.weltschmerz.core.Weltschmerz;
+import com.ritualsoftheold.weltschmerz.misc.misc.Random;
 import xerial.larray.LByteArray;
 
 import java.nio.ByteBuffer;
@@ -15,10 +17,12 @@ public class Foreman {
     private int grassID;
     private int grassMeshID;
     private boolean isDifferent;
-
+    private Weltschmerz weltschmerz;
+    private Random random;
 
     public Foreman(){
-
+        weltschmerz = new Weltschmerz();
+        random = weltschmerz.getRandom();
     }
 
     void setMaterials(int dirtID, int grassID, int grassMeshID) {
@@ -56,7 +60,7 @@ public class Foreman {
 
         for (int z = 0; z < 64; z++) {
             for (int x = 0; x < 64; x++) {
-               /* int elevation = (int) Math.round(.getNoise(x + posX * 64, z + posZ * 64));
+                int elevation = (int) Math.round(weltschmerz.getElevation(x + posX * 64, z + posZ * 64));
                 for (int y = 0; y < 64; y++) {
                     if ((elevation / 64) > (posY / 64)) {
                         blockBuffer.put(x + (y * 64) + (z * 4096), (byte) dirtID);
@@ -69,10 +73,10 @@ public class Foreman {
                 }
                 if (isDifferent) {
                     blockBuffer.put(x + Math.abs((elevation % 64) * 64) + (z * 4096), (byte) grassID);
-                    if(xoRoRNG.nextBoolean()) {
+                    if(random.getBoolean()) {
                         blockBuffer.put(x + Math.abs(((elevation + 1)% 64) * 64) + (z * 4096), (byte) grassMeshID);
                     }
-                }*/
+                }
             }
         }
 
@@ -115,7 +119,7 @@ public class Foreman {
             int additionY = 0;
             for (int z = 0; z < sizeZ; z++) {
                 for (int x = 0; x < sizeX; x++) {
-                 /*   int elevation = (int) Math.round(noise.getNoise(x + posX * 64, z + posZ * 64));
+                    int elevation = (int) Math.round(weltschmerz.getElevation(x + posX * 64, z + posZ * 64));
                     if (posY / 64 == elevation / 64) {
                         elevation += 1;
                         if(elevation%64 > additionY){
@@ -128,7 +132,7 @@ public class Foreman {
                         for (int y = 0; y < sizeY; y++) {
                             blockBuffer.put(x + (y * 64) + (z * 4096), treeID);
                         }
-                    }*/
+                    }
                 }
             }
             treeDistanceY += additionY;

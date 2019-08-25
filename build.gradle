@@ -1,20 +1,40 @@
-plugins {
-    id 'java'
+allprojects{
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    sourceCompatibility = 12
+    targetCompatibility = 12
 }
+
+
 
 group 'com.ritualsoftheold'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 12
 
-repositories {
-    mavenCentral()
-    jcenter()
+project(':Weltschmerz:weltschmerz-environment') {
+    dependencies {
+        compile project(':Weltschmerz:weltschmerz-misc')
+    }
+}
+
+project(':Weltschmerz:weltschmerz-core'){
+    dependencies {
+        compile project(':Weltschmerz:weltschmerz-misc')
+        compile project(':Weltschmerz:weltschmerz-environment')
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'org.xerial.larray:larray_2.12:0.4.1'
+    compile project(':Weltschmerz:weltschmerz-core')
+    compile project(':Weltschmerz:weltschmerz-misc')
 }
 
 

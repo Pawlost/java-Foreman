@@ -1,4 +1,6 @@
+apply from: 'Weltschmerz/settings.gradle'
+
 rootProject.name = 'Foreman'
 
-include 'Weltschmerz', ':Weltschmerz:weltschmerz-core', ':Weltschmerz:weltschmerz-environment',
-        ':Weltschmerz:heightmap-generator', ':Weltschmerz:weltschmerz-misc'
+include 'Weltschmerz', ':Weltschmerz:weltschmerz-core', ':Weltschmerz:weltschmerz-misc',
+        ':Weltschmerz:weltschmerz-environment'
