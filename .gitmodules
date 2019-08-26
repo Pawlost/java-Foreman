@@ -1,3 +1,6 @@
 [submodule "Weltschmerz"]
 	path = Weltschmerz
 	url = git@github.com:starandserpent/Weltschmerz.git
+[submodule "TerraCore"]
+	path = TerraCore
+	url = git@github.com:starandserpent/TerraCore.git

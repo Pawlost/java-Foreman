@@ -35,6 +35,7 @@ dependencies {
     compile 'org.xerial.larray:larray_2.12:0.4.1'
     compile project(':Weltschmerz:weltschmerz-core')
     compile project(':Weltschmerz:weltschmerz-misc')
+    compile project(':TerraCore')
 }
 
 

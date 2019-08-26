@@ -4,3 +4,4 @@ rootProject.name = 'Foreman'
 
 include 'Weltschmerz', ':Weltschmerz:weltschmerz-core', ':Weltschmerz:weltschmerz-misc',
         ':Weltschmerz:weltschmerz-environment'
+include 'TerraCore'
