@@ -25,13 +25,13 @@ public class Foreman {
         random = weltschmerz.getRandom();
     }
 
-    void setMaterials(int dirtID, int grassID, int grassMeshID) {
+    public void setMaterials(int dirtID, int grassID, int grassMeshID) {
         this.dirtID = dirtID;
         this.grassID = grassID;
         this.grassMeshID = grassMeshID;
     }
 
-    void setObject(int treeDistanceX, int treeDistanceY, int treeDistanceZ, byte value) {
+    public void setObject(int treeDistanceX, int treeDistanceY, int treeDistanceZ, byte value) {
         this.treeDistanceX = treeDistanceX;
         this.treeDistanceY = treeDistanceY;
         this.treeDistanceZ = treeDistanceZ;
@@ -39,7 +39,7 @@ public class Foreman {
         this.treeID = value;
     }
 
-    boolean isDifferent() {
+   public   boolean isDifferent() {
         return isDifferent;
     }
 
