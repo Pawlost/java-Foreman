@@ -1,4 +1,4 @@
-package com.ritualsoftheold.core;
+package com.ritualsoftheold.foreman.main;
 
 import com.ritualsoftheold.weltschmerz.core.Weltschmerz;
 import com.ritualsoftheold.weltschmerz.misc.misc.Random;
