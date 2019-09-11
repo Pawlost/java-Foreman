@@ -4,3 +4,6 @@
 [submodule "TerraCore"]
 	path = TerraCore
 	url = git@github.com:starandserpent/TerraCore.git
+[submodule "CentralConfig"]
+	path = CentralConfig
+	url = git@github.com:starandserpent/CentralConfig.git
