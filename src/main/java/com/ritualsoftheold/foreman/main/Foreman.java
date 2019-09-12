@@ -20,7 +20,7 @@ public class Foreman {
     private Weltschmerz weltschmerz;
     private Random random;
 
-    public Foreman(){
+    public Foreman() {
         weltschmerz = new Weltschmerz();
         random = weltschmerz.getRandom();
     }
@@ -39,14 +39,14 @@ public class Foreman {
         this.treeID = value;
     }
 
-   public   boolean isDifferent() {
+    public boolean isDifferent() {
         return isDifferent;
     }
 
 
     public LByteArray getChunk(int posX, int posY, int posZ, LByteArray chunk) {
-        posX = posX/16;
-        posZ = posZ/16;
+        posX = posX / 16;
+        posZ = posZ / 16;
         posY = posY * 4;
 
         int bufferSize = (int) chunk.size();
@@ -73,14 +73,15 @@ public class Foreman {
                 }
                 if (isDifferent) {
                     blockBuffer.put(x + Math.abs((elevation % 64) * 64) + (z * 4096), (byte) grassID);
-                    if(random.getBoolean()) {
-                        blockBuffer.put(x + Math.abs(((elevation + 1)% 64) * 64) + (z * 4096), (byte) grassMeshID);
+                    if (random.getBoolean()) {
+                        blockBuffer.put(x + Math.abs(((elevation + 1) % 64) * 64) + (z * 4096), (byte) grassMeshID);
                     }
                 }
             }
         }
 
-        if(posX >= 5 && posY/64 >= 0 && posZ >= 5 && treeDistanceX > 0 && treeDistanceY > 0 && treeDistanceZ > 0) {
+        /*
+        if (posX >= 5 && posY / 64 >= 0 && posZ >= 5 && treeDistanceX > 0 && treeDistanceY > 0 && treeDistanceZ > 0) {
 
             int sizeX;
             boolean accross = false;
@@ -116,16 +117,15 @@ public class Foreman {
                 treeDistanceZ -= treeDistanceZ % 64;
             }
 
-            int additionY = 0;
+           /* int additionY = 0;
             for (int z = 0; z < sizeZ; z++) {
                 for (int x = 0; x < sizeX; x++) {
                     int elevation = (int) Math.round(weltschmerz.getElevation(x + posX * 64, z + posZ * 64));
                     if (posY / 64 == elevation / 64) {
-                        elevation += 1;
-                        if(elevation%64 > additionY){
-                            additionY = elevation%64;
+                        if (elevation % 64 > additionY) {
+                            additionY = elevation % 64;
                         }
-                        for (int y = elevation % 63; y < 64; y++) {
+                        for (int y = elevation % 64; y < 64; y++) {
                             blockBuffer.put(x + (y * 64) + (z * 4096), treeID);
                         }
                     } else {
@@ -138,6 +138,8 @@ public class Foreman {
             treeDistanceY += additionY;
             isDifferent = true;
         }
+                    */
+
 
         blockBuffer.rewind();
         chunk.write(blockBuffer);
