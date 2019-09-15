@@ -1,5 +1,5 @@
 apply from: 'Weltschmerz/settings.gradle'
-apply from: 'CentralConfig/settings.gradle'
+apply from: 'TerraCore/settings.gradle'
 
 
 rootProject.name = 'Foreman'
