@@ -1,13 +1,20 @@
-package com.ritualsoftheold.foreman.main;
+package com.ritualsoftheold.foreman;
 
+import com.ritualsoftheold.terra.core.DataConstants;
+import com.ritualsoftheold.terra.core.chunk.ChunkLArray;
+import com.ritualsoftheold.terra.core.materials.Registry;
+import com.ritualsoftheold.terra.core.materials.TerraModule;
+import com.ritualsoftheold.terra.core.materials.TerraObject;
+import com.ritualsoftheold.terra.server.chunks.ChunkGenerator;
 import com.ritualsoftheold.weltschmerz.core.Weltschmerz;
-import com.ritualsoftheold.weltschmerz.misc.misc.Random;
+import com.ritualsoftheold.weltschmerz.misc.utils.Random;
 import xerial.larray.LByteArray;
+import xerial.larray.japi.LArrayJ;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class Foreman {
+public class Foreman implements ChunkGenerator {
     private int treeDistanceX;
     private int treeDistanceY;
     private int treeDistanceZ;
@@ -16,55 +23,56 @@ public class Foreman {
     private int dirtID;
     private int grassID;
     private int grassMeshID;
-    private boolean isDifferent;
     private Weltschmerz weltschmerz;
     private Random random;
 
-    public Foreman() {
+    private Registry reg;
+
+    Foreman() {
         weltschmerz = new Weltschmerz();
         random = weltschmerz.getRandom();
     }
 
-    public void setMaterials(int dirtID, int grassID, int grassMeshID) {
-        this.dirtID = dirtID;
-        this.grassID = grassID;
-        this.grassMeshID = grassMeshID;
+    @Override
+    public void setMaterials(TerraModule mod, Registry reg) {
+        dirtID = reg.getMaterial(mod,"dirt").getWorldId();
+        grassID = reg.getMaterial(mod, "grass").getWorldId();
+        grassMeshID = reg.getMaterial(mod, "Tall_Grass-mesh_variant01-01").getWorldId();
+
+        TerraObject tree =  reg.getMaterial(mod, "birch-02_baked");
+        treeDistanceX = tree.getMesh().getDefaultDistanceX();
+        treeDistanceY = tree.getMesh().getDefaultDistanceY();
+        treeDistanceZ = tree.getMesh().getDefaultDistanceZ();
+        treeID = tree.getMesh().getId();
+        this.reg = reg;
     }
 
-    public void setObject(int treeDistanceX, int treeDistanceY, int treeDistanceZ, byte value) {
-        this.treeDistanceX = treeDistanceX;
-        this.treeDistanceY = treeDistanceY;
-        this.treeDistanceZ = treeDistanceZ;
+    @Override
+    public ChunkLArray getChunk(float posX, float posY, float posZ) {
+        LByteArray lByteArray = LArrayJ.newLByteArray(DataConstants.CHUNK_SIZE);
 
-        this.treeID = value;
-    }
+        ChunkLArray chunk = new ChunkLArray(posX, posY, posZ, lByteArray, reg);
 
-    public boolean isDifferent() {
-        return isDifferent;
-    }
+        int posx = (int)(posX / 16);
+        int posz = (int)(posZ / 16);
+        int posy = (int)(posY * 4);
 
-
-    public LByteArray getChunk(int posX, int posY, int posZ, LByteArray chunk) {
-        posX = posX / 16;
-        posZ = posZ / 16;
-        posY = posY * 4;
-
-        int bufferSize = (int) chunk.size();
+        int bufferSize = DataConstants.CHUNK_SIZE;
 
         ByteBuffer blockBuffer = ByteBuffer.allocate(bufferSize);
         byte[] fill = new byte[bufferSize];
         Arrays.fill(fill, (byte) 1);
         blockBuffer.put(fill);
 
-        isDifferent = false;
+        boolean isDifferent = false;
 
         for (int z = 0; z < 64; z++) {
             for (int x = 0; x < 64; x++) {
-                int elevation = (int) Math.round(weltschmerz.getElevation(x + posX * 64, z + posZ * 64));
+                int elevation = (int) Math.round(weltschmerz.getElevation(x + posx * 64, z + posz * 64));
                 for (int y = 0; y < 64; y++) {
-                    if ((elevation / 64) > (posY / 64)) {
+                    if ((elevation / 64) > (posy / 64)) {
                         blockBuffer.put(x + (y * 64) + (z * 4096), (byte) dirtID);
-                    } else if (elevation / 64 == (posY / 64)) {
+                    } else if (elevation / 64 == (posy / 64)) {
                         if (Math.abs(elevation % 64) >= y) {
                             blockBuffer.put(x + (y * 64) + (z * 4096), (byte) dirtID);
                             isDifferent = true;
@@ -140,9 +148,11 @@ public class Foreman {
         }
                     */
 
-
         blockBuffer.rewind();
-        chunk.write(blockBuffer);
+        lByteArray.write(blockBuffer);
+
+        chunk.setDifferent(isDifferent);
+
         return chunk;
     }
 }

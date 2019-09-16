@@ -6,16 +6,25 @@ allprojects{
         jcenter()
     }
 
+    group 'com.ritualsoftheold'
+    version '1.0-SNAPSHOT'
+
     sourceCompatibility = 12
     targetCompatibility = 12
 }
 
+project(':foreman-config') {
+    dependencies {
+        compile project(':TerraServer:TerraCore')
+        compile project(':3D-model-loader')
+    }
+}
 
-
-group 'com.ritualsoftheold'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 12
+project('TerraServer') {
+    dependencies {
+        compile project(':TerraServer:TerraCore')
+    }
+}
 
 project(':Weltschmerz:weltschmerz-environment') {
     dependencies {
@@ -35,7 +44,8 @@ dependencies {
     compile 'org.xerial.larray:larray_2.12:0.4.1'
     compile project(':Weltschmerz:weltschmerz-core')
     compile project(':Weltschmerz:weltschmerz-misc')
-    compile project(':TerraCore')
+    compile project(':foreman-config')
+    compile project('TerraServer')
 }
 
 

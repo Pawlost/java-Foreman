@@ -1,6 +1,9 @@
 [submodule "Weltschmerz"]
 	path = Weltschmerz
 	url = git@github.com:starandserpent/Weltschmerz.git
-[submodule "TerraCore"]
-	path = TerraCore
-	url = git@github.com:starandserpent/TerraCore.git
+[submodule "TerraServer"]
+	path = TerraServer
+	url = git@github.com:starandserpent/TerraServer.git
+[submodule "3D-model-loader"]
+	path = 3D-model-loader
+	url = git@github.com:starandserpent/3D-model-loader.git

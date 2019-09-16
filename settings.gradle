@@ -1,9 +1,11 @@
 apply from: 'Weltschmerz/settings.gradle'
-apply from: 'TerraCore/settings.gradle'
-
+apply from: '3D-model-loader/settings.gradle'
+apply from: 'TerraServer/settings.gradle'
 
 rootProject.name = 'Foreman'
 
-include 'Weltschmerz', ':Weltschmerz:weltschmerz-core', ':Weltschmerz:weltschmerz-misc',
+include ':Weltschmerz:weltschmerz-core', ':Weltschmerz:weltschmerz-misc',
         ':Weltschmerz:weltschmerz-environment'
-include 'TerraCore'
+include 'TerraServer', ':TerraServer:TerraCore'
+include ':3D-model-loader'
+include ':foreman-config'
