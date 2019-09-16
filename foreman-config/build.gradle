@@ -1,3 +1,0 @@
-dependencies {
-    compile group: 'org.jmonkeyengine', name: 'jme3-core', version: '3.2.2-stable'
-}

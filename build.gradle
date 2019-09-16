@@ -13,16 +13,9 @@ allprojects{
     targetCompatibility = 12
 }
 
-project(':foreman-config') {
+project(':TerraServer') {
     dependencies {
-        compile project(':TerraServer:TerraCore')
-        compile project(':3D-model-loader')
-    }
-}
-
-project('TerraServer') {
-    dependencies {
-        compile project(':TerraServer:TerraCore')
+        compile project(':TerraServer:3D-model-loader:TerraCore')
     }
 }
 
@@ -44,8 +37,7 @@ dependencies {
     compile 'org.xerial.larray:larray_2.12:0.4.1'
     compile project(':Weltschmerz:weltschmerz-core')
     compile project(':Weltschmerz:weltschmerz-misc')
-    compile project(':foreman-config')
-    compile project('TerraServer')
+    compile project(':TerraServer')
 }
 
 
