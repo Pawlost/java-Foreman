@@ -1,6 +1,5 @@
 package com.ritualsoftheold.foreman;
 
-import com.ritualsoftheold.terra.core.DataConstants;
 import com.ritualsoftheold.terra.core.chunk.ChunkLArray;
 import com.ritualsoftheold.terra.core.materials.Registry;
 import com.ritualsoftheold.terra.core.materials.TerraModule;
@@ -8,11 +7,8 @@ import com.ritualsoftheold.terra.core.materials.TerraObject;
 import com.ritualsoftheold.terra.server.chunks.ChunkGenerator;
 import com.ritualsoftheold.weltschmerz.core.Weltschmerz;
 import com.ritualsoftheold.weltschmerz.misc.utils.Random;
-import xerial.larray.LByteArray;
-import xerial.larray.japi.LArrayJ;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 public class Foreman implements ChunkGenerator {
     private int treeDistanceX;
@@ -20,9 +16,10 @@ public class Foreman implements ChunkGenerator {
     private int treeDistanceZ;
     private byte treeID;
 
-    private int dirtID;
-    private int grassID;
-    private int grassMeshID;
+    private ByteBuffer dirtID;
+    private ByteBuffer airID;
+    private ByteBuffer grassID;
+    private ByteBuffer grassMeshID;
     private Weltschmerz weltschmerz;
     private Random random;
 
@@ -35,11 +32,12 @@ public class Foreman implements ChunkGenerator {
 
     @Override
     public void setMaterials(TerraModule mod, Registry reg) {
-        dirtID = reg.getMaterial(mod,"dirt").getWorldId();
-        grassID = reg.getMaterial(mod, "grass").getWorldId();
-        grassMeshID = reg.getMaterial(mod, "Tall_Grass-mesh_variant01-01").getWorldId();
+        airID = ByteBuffer.allocate(4).putInt(reg.getMaterial("base:air").getWorldId());
+        dirtID = ByteBuffer.allocate(4).putInt(reg.getMaterial(mod, "dirt").getWorldId());
+        grassID = ByteBuffer.allocate(4).putInt(reg.getMaterial(mod, "grass").getWorldId());
+        grassMeshID = ByteBuffer.allocate(4).putInt(reg.getMaterial(mod, "Tall_Grass-mesh_variant01-01").getWorldId());
 
-        TerraObject tree =  reg.getMaterial(mod, "birch-02_baked");
+        TerraObject tree = reg.getMaterial(mod, "birch-02_baked");
         treeDistanceX = tree.getMesh().getDefaultDistanceX();
         treeDistanceY = tree.getMesh().getDefaultDistanceY();
         treeDistanceZ = tree.getMesh().getDefaultDistanceZ();
@@ -49,20 +47,11 @@ public class Foreman implements ChunkGenerator {
 
     @Override
     public ChunkLArray getChunk(float posX, float posY, float posZ) {
-        LByteArray lByteArray = LArrayJ.newLByteArray(DataConstants.CHUNK_SIZE);
+        ChunkLArray chunk = new ChunkLArray(posX, posY, posZ, airID, reg);
 
-        ChunkLArray chunk = new ChunkLArray(posX, posY, posZ, lByteArray, reg);
-
-        int posx = (int)(posX / 16);
-        int posz = (int)(posZ / 16);
-        int posy = (int)(posY * 4);
-
-        int bufferSize = DataConstants.CHUNK_SIZE;
-
-        ByteBuffer blockBuffer = ByteBuffer.allocate(bufferSize);
-        byte[] fill = new byte[bufferSize];
-        Arrays.fill(fill, (byte) 1);
-        blockBuffer.put(fill);
+        int posx = (int) (posX / 16);
+        int posz = (int) (posZ / 16);
+        int posy = (int) (posY * 4);
 
         boolean isDifferent = false;
 
@@ -71,18 +60,18 @@ public class Foreman implements ChunkGenerator {
                 int elevation = (int) Math.round(weltschmerz.getElevation(x + posx * 64, z + posz * 64));
                 for (int y = 0; y < 64; y++) {
                     if ((elevation / 64) > (posy / 64)) {
-                        blockBuffer.put(x + (y * 64) + (z * 4096), (byte) dirtID);
+                        chunk.set(x, y, z, dirtID);
                     } else if (elevation / 64 == (posy / 64)) {
                         if (Math.abs(elevation % 64) >= y) {
-                            blockBuffer.put(x + (y * 64) + (z * 4096), (byte) dirtID);
+                            chunk.set(x, y, z, dirtID);
                             isDifferent = true;
                         }
                     }
                 }
                 if (isDifferent) {
-                    blockBuffer.put(x + Math.abs((elevation % 64) * 64) + (z * 4096), (byte) grassID);
+                    chunk.set(x, Math.abs(elevation % 64), z, grassID);
                     if (random.getBoolean()) {
-                        blockBuffer.put(x + Math.abs(((elevation + 1) % 64) * 64) + (z * 4096), (byte) grassMeshID);
+                        chunk.set(x, Math.abs(elevation % 64) + 1, z, grassMeshID);
                     }
                 }
             }
@@ -147,9 +136,6 @@ public class Foreman implements ChunkGenerator {
             isDifferent = true;
         }
                     */
-
-        blockBuffer.rewind();
-        lByteArray.write(blockBuffer);
 
         chunk.setDifferent(isDifferent);
 

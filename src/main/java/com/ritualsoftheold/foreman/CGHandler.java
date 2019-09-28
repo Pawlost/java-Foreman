@@ -5,11 +5,11 @@ import com.ritualsoftheold.terra.server.chunks.ChunkGenerator;
 public class CGHandler {
     private Foreman foreman;
 
-    public CGHandler(){
+    public CGHandler() {
         foreman = new Foreman();
     }
 
-    public ChunkGenerator getGenerator(){
+    public ChunkGenerator getGenerator() {
         return foreman;
     }
 }
