@@ -26,7 +26,7 @@ public class Foreman implements ChunkGenerator {
     private Registry reg;
 
     Foreman() {
-        weltschmerz = new Weltschmerz();
+        weltschmerz = new Weltschmerz(false);
         random = weltschmerz.getRandom();
     }
 
