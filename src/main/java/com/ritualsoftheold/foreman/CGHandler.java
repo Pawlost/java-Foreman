@@ -1,6 +1,6 @@
 package com.ritualsoftheold.foreman;
 
-import com.ritualsoftheold.terra.server.chunks.ChunkGenerator;
+import com.ritualsoftheold.terra.server.world.ChunkGenerator;
 
 public class CGHandler {
     private Foreman foreman;

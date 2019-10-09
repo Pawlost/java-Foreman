@@ -4,7 +4,7 @@ import com.ritualsoftheold.terra.core.chunk.ChunkLArray;
 import com.ritualsoftheold.terra.core.materials.Registry;
 import com.ritualsoftheold.terra.core.materials.TerraModule;
 import com.ritualsoftheold.terra.core.materials.TerraObject;
-import com.ritualsoftheold.terra.server.chunks.ChunkGenerator;
+import com.ritualsoftheold.terra.server.world.ChunkGenerator;
 import com.ritualsoftheold.weltschmerz.core.Weltschmerz;
 import com.ritualsoftheold.weltschmerz.misc.utils.Random;
 
@@ -68,6 +68,7 @@ public class Foreman implements ChunkGenerator {
                         }
                     }
                 }
+
                 if (isDifferent) {
                     chunk.set(x, Math.abs(elevation % 64), z, grassID);
                     if (random.getBoolean()) {
